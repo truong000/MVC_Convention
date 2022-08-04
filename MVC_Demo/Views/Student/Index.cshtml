@@ -1,0 +1,23 @@
+﻿@model MVC_Demo.Models.Student.StudentViewModel
+
+<h3>Student List</h3>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.Name</td>
+                <td>@student.Age</td>
+                <td>@Html.ActionLink("Update", "Update", "Student", new { studentid = student.StudentId} )</td>
+                <td>@Html.ActionLink("Delete", "Delete", "Student", new { studentid = student.StudentId} )</td>
+            </tr>
+        }
+</table>
