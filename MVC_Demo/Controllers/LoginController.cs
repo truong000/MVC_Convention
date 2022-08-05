@@ -22,7 +22,7 @@ namespace MVC_Demo.Controllers
             return users;
         }
 
-        //Check account password
+        //Check account password when login
         [HttpPost]
         public IActionResult VerifyAccount(UserModel userAccount)
         {

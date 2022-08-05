@@ -11,6 +11,8 @@ namespace MVC_Demo.Controllers
 
             return View(model);
         }
+
+        //Add new student infomation 
         [HttpGet]
         public IActionResult Create()
         {
@@ -34,6 +36,8 @@ namespace MVC_Demo.Controllers
                 return View();
             }
         }
+
+        //Edit information student by id
         [HttpGet]
         public IActionResult Update(int studentid)
         {
@@ -53,6 +57,7 @@ namespace MVC_Demo.Controllers
             return View("Index", listStudent);
         }
 
+        //Delete student information by id
         [HttpGet]
         public IActionResult Delete(int studentid)
         {
