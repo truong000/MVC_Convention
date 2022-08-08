@@ -2,12 +2,28 @@
 
 <div class="login-page">
   <div class="form">
-        @using (Html.BeginForm("Create", "Student", FormMethod.Post))
-        {
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder="name"})
-            @Html.TextBoxFor(m => m.Age, new { @class = "form-control", @placeholder="age"})
-            <input type="submit" name="submit" class="btn btn-info btn-md" value="save"/>
-        }
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-dangger"></div>
+                <div class="login-form">
+                     <h4 style="text-align:center" class="login-title">Create</h4>
+                     <div class="row">
+                         <div class="col-md-12">
+                                    <label>Tên*</label>
+                                    <input type="text" asp-for="Name" placeholder="Họ và Tên">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                         </div>
+                         <div class="col-md-12">
+                                    <label>Tuổi*</label>
+                                    <input type="text" asp-for="Age" placeholder="Tuổi">
+                                    <span asp-validation-for="Age" class="text-danger"></span>
+                         </div>
+                              
+                         <div class="col-12">
+                                    <button class="btn btn-custom-size lg-size btn-secondary btn-primary-hover rounded-0">LƯU</button>
+                         </div>
+                         </div>
+                </div>
+        </form>
   </div>
-  <div>@ViewBag.message</div>
+  <div>@ViewBag.error</div>
 </div>

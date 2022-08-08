@@ -10,6 +10,7 @@ namespace MVC_Demo.Controllers
             return View();
         }
 
+        //Declare student information data to the list
         public List<UserModel> PutValue()
         {
             var users = new List<UserModel>
@@ -30,6 +31,7 @@ namespace MVC_Demo.Controllers
 
             if (account.Any(x => x.Equals(userAccount)))
             {
+
                 ViewBag.message = "Login Success";
                 return RedirectToAction("Index", "Student");
             }

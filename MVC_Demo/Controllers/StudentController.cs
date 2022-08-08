@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC_Demo.Models.Student;
 
 namespace MVC_Demo.Controllers
 {
     public class StudentController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             var model = GetModelData();
@@ -14,52 +16,81 @@ namespace MVC_Demo.Controllers
 
         //Add new student infomation 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateStudent()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(StudentItemModel student)
+        public async Task<IActionResult> CreateStudent(StudentItemModel student)
         {
             try
             {
-                var listStudent = GetModelData();
-                var idStudent = listStudent.Students.Max(x => x.StudentId) + 1;
-                student.StudentId = idStudent;
-                listStudent.Students.Add(student);
+                //Check form input
+                if (ModelState.IsValid)
+                {
+                    var listStudent = GetModelData();
+                    var idStudent = listStudent.Students.Max(x => x.StudentId) + 1;
+                    student.StudentId = idStudent;
+                    listStudent.Students.Add(student);
 
-                TempData["StudentList"] = System.Text.Json.JsonSerializer.Serialize(listStudent);
-                return RedirectToAction("Index");
+                    TempData["StudentList"] = System.Text.Json.JsonSerializer.Serialize(listStudent);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.error = "Bạn phải điền đầy đủ thông tin";
+                    return View();
+                }
             }
             catch
             {
                 return View();
             }
+
+            return View("Index");
         }
 
         //Edit information student by id
         [HttpGet]
-        public IActionResult Update(int studentid)
+        public IActionResult UpdateStudent(int studentid)
         {
             var student = GetModelData().Students.FirstOrDefault(x => x.StudentId == studentid);
             return View(student);
         }
         [HttpPost]
-        public IActionResult Update(StudentItemModel student)
+        public async Task<IActionResult> UpdateStudent(StudentItemModel student)
         {
-            var listStudent = GetModelData();
-            var obj = listStudent.Students.FirstOrDefault(x => x.StudentId == student.StudentId);
-            obj.Name = student.Name;
-            obj.Age = student.Age;
+            try
+            {
+                //Check form input
+                if (ModelState.IsValid)
+                {
+                    var listStudent = GetModelData();
+                    var obj = listStudent.Students.FirstOrDefault(x => x.StudentId == student.StudentId);
+                    obj.Name = student.Name;
+                    obj.Age = student.Age;
 
-            TempData["StudentList"] = System.Text.Json.JsonSerializer.Serialize(listStudent);
+                    TempData["StudentList"] = System.Text.Json.JsonSerializer.Serialize(listStudent);
+                    return View("Index", listStudent);
+                }
+                else
+                {
+                    ViewBag.error = "Bạn phải điền đầy đủ thông tin";
+                    return View();
+                }
+            }
+            catch
+            {
+                return View();
+            }
 
-            return View("Index", listStudent);
+            return View("Index");
+            
         }
 
         //Delete student information by id
         [HttpGet]
-        public IActionResult Delete(int studentid)
+        public IActionResult DeleteStudent(int studentid)
         {
             var lst = GetModelData();
             var student = lst.Students.FirstOrDefault(x => x.StudentId == studentid);
